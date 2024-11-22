@@ -1,7 +1,8 @@
 package com.arthurlamberti.cdb.infrastructure.wallet.models;
 
-public record CreateWalletRequest (
+public record BuyPaperRequest(
         String customerId,
-        String paperId
+        String paperId,
+        Integer amount
 ) {
 }

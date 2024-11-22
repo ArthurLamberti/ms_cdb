@@ -9,7 +9,7 @@ public record GetWalletOutput(
         String id,
         Double amount,
         String customerId,
-        List<String> paperIdsList
+        String paperId
 ) {
 
     public static GetWalletOutput from(Wallet wallet) {
@@ -17,15 +17,7 @@ public record GetWalletOutput(
                 wallet.getId().getValue(),
                 wallet.getAmount(),
                 wallet.getCustomerId(),
-                toStringList(wallet.getPaperIDs())
+                wallet.getPaperID()
         );
     }
-
-    private static List<String> toStringList(List<PaperID> paperIDS) {
-        return paperIDS
-                .stream()
-                .map(PaperID::getValue).
-                toList();
-    }
-
 }

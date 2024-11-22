@@ -35,13 +35,14 @@ public class CreateWalletUseCaseTest extends UseCaseTest {
     public void givenAValidCommand_whenCallsCreatePaper_shouldReturnPaperId() {
         final var expectedAmount = Fixture.positiveNumber();
         final var expectedCustomerId = Fixture.uuid();
-        final var aCommand = CreateWalletCommand.with(expectedAmount, expectedCustomerId);
+        final var expectedPaperId = Fixture.uuid();
+        final var aCommand = CreateWalletCommand.with(expectedAmount, expectedCustomerId, expectedPaperId);
 
         when(walletGateway.create(any())).thenAnswer(returnsFirstArg());
 
         final var actualResult = useCase.execute(aCommand);
         assertNotNull(actualResult);
-        assertNotNull(actualResult.walletId());
+        assertNotNull(actualResult.id());
     }
 
     @Test

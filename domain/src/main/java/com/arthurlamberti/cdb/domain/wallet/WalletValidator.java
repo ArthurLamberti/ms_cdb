@@ -22,7 +22,6 @@ public class WalletValidator extends Validator {
     public void validate() {
         checkAmount();
         checkCustomerId();
-        checkPaperIdsList();
     }
 
     private void checkAmount(){
@@ -44,12 +43,6 @@ public class WalletValidator extends Validator {
         }
         if (customerId.isBlank()){
             this.validationHandler().append(new Error("'customerId' should not be empty"));
-        }
-    }
-
-    private void checkPaperIdsList(){
-        if (isNull(wallet.getPaperIDs())) {
-            this.validationHandler().append(new Error("'paperIDs should not be null'"));
         }
     }
 }

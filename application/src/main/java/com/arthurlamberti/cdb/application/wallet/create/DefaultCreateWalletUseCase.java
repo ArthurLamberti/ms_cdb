@@ -20,7 +20,7 @@ public class DefaultCreateWalletUseCase extends CreateWalletUseCase {
     public CreateWalletOutput execute(CreateWalletCommand input) {
         final var notification = Notification.create();
         final var aWallet = notification.validate(
-                () -> Wallet.newWallet(input.amount(), input.customerId())
+                () -> Wallet.newWallet(input.amount(), input.customerId(), input.paperId())
         );
         if (notification.hasError()) {
             throw new NotificationException("Could not create aggregate Wallet", notification);

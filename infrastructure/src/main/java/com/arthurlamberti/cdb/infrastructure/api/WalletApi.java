@@ -4,9 +4,7 @@ package com.arthurlamberti.cdb.infrastructure.api;
 import com.arthurlamberti.cdb.infrastructure.paper.models.CreatePaperRequest;
 import com.arthurlamberti.cdb.infrastructure.paper.models.GetPaperResponse;
 import com.arthurlamberti.cdb.infrastructure.paper.models.ListPaperResponse;
-import com.arthurlamberti.cdb.infrastructure.wallet.models.CreateWalletRequest;
-import com.arthurlamberti.cdb.infrastructure.wallet.models.GetWalletResponse;
-import com.arthurlamberti.cdb.infrastructure.wallet.models.ListWalletResponse;
+import com.arthurlamberti.cdb.infrastructure.wallet.models.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -53,4 +51,31 @@ public interface WalletApi {
             @ApiResponse(responseCode = "500", description = "Internal error server"),
     })
     GetWalletResponse getWalletById(@PathVariable String walletId);
+
+    @PostMapping(
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            value = "/{customerId}/buy/{paperId}"
+    )
+    @Operation(summary = "Buy a paper")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Created successfully"),
+            @ApiResponse(responseCode = "422", description = "A validation error was throw"),
+            @ApiResponse(responseCode = "500", description = "Internal error server"),
+    })
+    ResponseEntity<?> buyPaper(@RequestBody BuyPaperRequest input, @PathVariable String customerId, @PathVariable String paperId);
+
+
+    @PostMapping(
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            value = "/{customerId}/sell/{paperId}"
+    )
+    @Operation(summary = "Buy a paper")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Created successfully"),
+            @ApiResponse(responseCode = "422", description = "A validation error was throw"),
+            @ApiResponse(responseCode = "500", description = "Internal error server"),
+    })
+    ResponseEntity<?> sellPaper(@RequestBody SellPaperRequest input, @PathVariable String customerId, @PathVariable String paperId);
 }

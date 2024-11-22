@@ -18,28 +18,28 @@ public class Wallet extends AggregateRoot<WalletID> {
 
     private final Double amount;
     private final String customerId;
-    private final List<PaperID> paperIDs;
+    private final String paperID;
 
     protected Wallet(
             final WalletID anId,
             final Double anAmount,
             final String aCustomerId,
-            final List<PaperID> paperIDs
+            final String paperID
     ) {
         super(anId);
         this.amount = anAmount;
         this.customerId = aCustomerId;
-        this.paperIDs = paperIDs;
+        this.paperID = paperID;
 
         selfValidate();
     }
 
-    public static Wallet with(final WalletID anId, final Double amount, String customerId) {
+    public static Wallet with(final WalletID anId, final Double amount, String customerId, String paperID) {
         return new Wallet(
                 anId,
                 amount,
                 customerId,
-                null
+                paperID
         );
     }
 
@@ -52,18 +52,15 @@ public class Wallet extends AggregateRoot<WalletID> {
 
     public static Wallet newWallet(
             final Double anAmount,
-            final String customerId
+            final String customerId,
+            final String paperID
     ) {
         final var anId = WalletID.unique();
-        return new Wallet(anId, anAmount, customerId, new ArrayList<>());
+        return new Wallet(anId, anAmount, customerId, paperID);
     }
 
     @Override
     public void validate(final ValidationHandler handler) {
         new WalletValidator(handler, this).validate();
-    }
-
-    public void addPaper(final PaperID paperID) {
-        this.paperIDs.add(paperID);
     }
 }

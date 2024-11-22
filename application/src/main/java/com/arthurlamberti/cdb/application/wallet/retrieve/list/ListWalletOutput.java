@@ -10,14 +10,14 @@ public record ListWalletOutput (
         String id,
         Double amount,
         String customerId,
-        List<String> paperIdsList
+        String paperId
 ) {
     public static ListWalletOutput from(Wallet wallet) {
         return new ListWalletOutput(
                 wallet.getId().getValue(),
                 wallet.getAmount(),
                 wallet.getCustomerId(),
-                toStringList(wallet.getPaperIDs())
+                wallet.getPaperID()
         );
     }
 

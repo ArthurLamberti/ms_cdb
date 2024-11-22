@@ -7,9 +7,7 @@ import com.arthurlamberti.cdb.application.wallet.retrieve.list.ListWalletUseCase
 import com.arthurlamberti.cdb.infrastructure.api.WalletApi;
 import com.arthurlamberti.cdb.infrastructure.paper.models.CreatePaperRequest;
 import com.arthurlamberti.cdb.infrastructure.paper.models.GetPaperResponse;
-import com.arthurlamberti.cdb.infrastructure.wallet.models.CreateWalletRequest;
-import com.arthurlamberti.cdb.infrastructure.wallet.models.GetWalletResponse;
-import com.arthurlamberti.cdb.infrastructure.wallet.models.ListWalletResponse;
+import com.arthurlamberti.cdb.infrastructure.wallet.models.*;
 import com.arthurlamberti.cdb.infrastructure.wallet.presenters.WalletApiPresenter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +33,7 @@ public class WalletController implements WalletApi {
 
     @Override
     public ResponseEntity<?> createWallet(CreateWalletRequest input) {
-        final var aCommand = CreateWalletCommand.with(0.0,input.customerId());
+        final var aCommand = CreateWalletCommand.with(0.0,input.customerId(), input.paperId());
 
         final var output = createWalletUseCase.execute(aCommand);
 
@@ -53,5 +51,15 @@ public class WalletController implements WalletApi {
     @Override
     public GetWalletResponse getWalletById(String walletId) {
         return WalletApiPresenter.present(this.getWalletUseCase.execute(walletId));
+    }
+
+    @Override
+    public ResponseEntity<?> buyPaper(BuyPaperRequest input, String customerId, String paperId) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<?> sellPaper(SellPaperRequest input, String customerId, String paperId) {
+        return null;
     }
 }

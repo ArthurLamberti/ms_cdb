@@ -32,7 +32,7 @@ public class GetWalletUseCaseTest extends UseCaseTest {
 
     @Test
     public void givenAValidIdWithoutPaper_whenCallsGetWallet_shouldReturnWallet() {
-        final var expectedWallet = Wallet.newWallet(Fixture.positiveNumber(), Fixture.uuid());
+        final var expectedWallet = Wallet.newWallet(Fixture.positiveNumber(), Fixture.uuid(), Fixture.uuid());
         final var expectedWalletId = expectedWallet.getId();
 
         when(walletGateway.findById(any())).thenReturn(Optional.of(expectedWallet));
@@ -41,23 +41,7 @@ public class GetWalletUseCaseTest extends UseCaseTest {
         assertNotNull(actualWallet);
         assertEquals(expectedWallet.getAmount(), actualWallet.amount());
         assertEquals(expectedWallet.getCustomerId(), actualWallet.customerId());
-        assertEquals(List.<String>of(), actualWallet.paperIdsList());
-    }
-
-    @Test
-    public void givenAValidIdWithPaper_whenCallsGetWallet_shouldReturnWallet() {
-        final var expectedWallet = Wallet.newWallet(Fixture.positiveNumber(), Fixture.uuid());
-        final var expectedPaperId = PaperID.unique();
-        expectedWallet.addPaper(expectedPaperId);
-        final var expectedWalletId = expectedWallet.getId();
-
-        when(walletGateway.findById(any())).thenReturn(Optional.of(expectedWallet));
-
-        final var actualWallet = useCase.execute(expectedWalletId.getValue());
-        assertNotNull(actualWallet);
-        assertEquals(expectedWallet.getAmount(), actualWallet.amount());
-        assertEquals(expectedWallet.getCustomerId(), actualWallet.customerId());
-        assertEquals(expectedPaperId.getValue(), actualWallet.paperIdsList().get(0));
+        assertEquals(expectedWallet.getPaperID(), actualWallet.paperId);
     }
 
     @Test

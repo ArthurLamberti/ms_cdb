@@ -29,6 +29,9 @@ public class WalletJpaEntity {
     @Column(name = "customer_id", nullable = false)
     private String customerId;
 
+    //@OneToOne
+    //private PaperJpaEntity paper;
+
 //    @OneToOne
 //    private PaperJpaEntity paper;
 
@@ -44,7 +47,8 @@ public class WalletJpaEntity {
         return Wallet.with(
                 WalletID.from(this.id),
                 this.amount,
-                this.customerId
+                this.customerId,
+                null
         );
     }
 }
