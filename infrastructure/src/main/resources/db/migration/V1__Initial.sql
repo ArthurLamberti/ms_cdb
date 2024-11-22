@@ -1,0 +1,5 @@
+CREATE TABLE papers
+(
+    id    CHAR(32) NOT NULL PRIMARY KEY,
+    value DOUBLE   NOT NULL
+);

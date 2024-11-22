@@ -1,0 +1,5 @@
+rootProject.name = 'ms_cdb'
+include 'domain'
+include 'application'
+include 'infrastructure'
+
