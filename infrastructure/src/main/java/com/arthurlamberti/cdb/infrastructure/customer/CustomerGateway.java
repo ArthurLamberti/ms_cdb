@@ -4,7 +4,9 @@ import com.arthurlamberti.cdb.domain.adapters.feing.CustomerExternal;
 import com.arthurlamberti.cdb.domain.adapters.models.CustomerExternalDomain;
 import com.arthurlamberti.cdb.infrastructure.customer.feign.CustomerFeign;
 import com.arthurlamberti.cdb.infrastructure.customer.models.CustomerResponse;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CustomerGateway implements CustomerExternal {
 
     private final CustomerFeign customerFeign;

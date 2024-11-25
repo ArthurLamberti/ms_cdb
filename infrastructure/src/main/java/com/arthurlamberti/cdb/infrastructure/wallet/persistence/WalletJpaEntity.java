@@ -24,11 +24,13 @@ public class WalletJpaEntity {
     private String id;
 
     @Column(name = "amount", nullable = false)
-    private Double amount;
+    private Integer amount;
 
     @Column(name = "customer_id", nullable = false)
     private String customerId;
 
+    @Column(name = "paper_id", nullable = false)
+    private String paperId;
     //@OneToOne
     //private PaperJpaEntity paper;
 
@@ -39,7 +41,8 @@ public class WalletJpaEntity {
         return new WalletJpaEntity(
                 aWallet.getId().getValue(),
                 aWallet.getAmount(),
-                aWallet.getCustomerId()
+                aWallet.getCustomerId(),
+                aWallet.getPaperID()
         );
     }
 
@@ -48,7 +51,7 @@ public class WalletJpaEntity {
                 WalletID.from(this.id),
                 this.amount,
                 this.customerId,
-                null
+                this.paperId
         );
     }
 }

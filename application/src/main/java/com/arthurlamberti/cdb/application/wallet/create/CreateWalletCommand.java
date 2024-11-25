@@ -1,12 +1,12 @@
 package com.arthurlamberti.cdb.application.wallet.create;
 
 public record CreateWalletCommand(
-        Double amount,
+        Integer amount,
         String customerId,
         String paperId
 ) {
     public static CreateWalletCommand with(
-            final Double amount,
+            final Integer amount,
             final String customerId,
             final String paperId
     ) {

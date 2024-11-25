@@ -48,11 +48,19 @@ public final class Fixture {
         return FAKER.bool().bool();
     }
 
-    public static Double positiveNumber() {
+    public static Integer positiveNumber() {
+        return FAKER.number().numberBetween(1, Integer.MAX_VALUE);
+    }
+
+    public static Double positiveDoubleNumber() {
         return FAKER.number().randomDouble(2,1, Integer.MAX_VALUE);
     }
 
-    public static Double negativeNumber() {
+    public static Integer negativeNumber() {
+        return FAKER.number().numberBetween(Integer.MIN_VALUE, -1);
+    }
+
+    public static Double negativeDoubleNumber() {
         return FAKER.number().randomDouble(2,Integer.MIN_VALUE, -1);
     }
 }

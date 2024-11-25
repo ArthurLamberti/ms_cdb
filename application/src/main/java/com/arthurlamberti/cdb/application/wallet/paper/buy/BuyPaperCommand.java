@@ -5,7 +5,7 @@ public record BuyPaperCommand (
         String paperId,
         Integer amount
 ) {
-    public BuyPaperCommand with(String customerId, String paperId, Integer amount) {
+    public static BuyPaperCommand with(String customerId, String paperId, Integer amount) {
         return new BuyPaperCommand(customerId, paperId, amount);
     }
 }

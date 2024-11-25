@@ -41,7 +41,7 @@ public class GetWalletUseCaseTest extends UseCaseTest {
         assertNotNull(actualWallet);
         assertEquals(expectedWallet.getAmount(), actualWallet.amount());
         assertEquals(expectedWallet.getCustomerId(), actualWallet.customerId());
-        assertEquals(expectedWallet.getPaperID(), actualWallet.paperId);
+        assertEquals(expectedWallet.getPaperID(), actualWallet.paperId());
     }
 
     @Test

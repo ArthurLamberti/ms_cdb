@@ -14,8 +14,9 @@ public class WalletTest extends UnitTest {
     public void givenAValidParams_whenCallsNewWallet_shouldInstantiatIt() {
         final var expectedAmount = Fixture.positiveNumber();
         final var expectedCustomerId = Fixture.uuid();
+        final var expectedPaperId = Fixture.uuid();
 
-        final var actualWallet = Wallet.newWallet(expectedAmount, expectedCustomerId);
+        final var actualWallet = Wallet.newWallet(expectedAmount, expectedCustomerId,expectedPaperId);
 
         assertNotNull(actualWallet);
         assertNotNull(actualWallet.getId());
@@ -25,10 +26,12 @@ public class WalletTest extends UnitTest {
 
     @Test
     public void givenAValidParamsWithAmount0_whenCallsNewWallet_shouldInstantiatIt() {
-        final var expectedAmount = 0.0;
+        final var expectedAmount = 0;
         final var expectedCustomerId = Fixture.uuid();
 
-        final var actualWallet = Wallet.newWallet(expectedAmount, expectedCustomerId);
+        final var expectedPaperId = Fixture.uuid();
+
+        final var actualWallet = Wallet.newWallet(expectedAmount, expectedCustomerId,expectedPaperId);
 
         assertNotNull(actualWallet);
         assertNotNull(actualWallet.getId());
@@ -38,12 +41,13 @@ public class WalletTest extends UnitTest {
 
     @Test
     public void givenAnInvalidNullAmount_whenCallsNewWallet_shouldReceiveAnException() {
-        final Double expectedAmount = null;
+        final Integer expectedAmount = null;
         final var expectedCustomerId = Fixture.uuid();
+        final var expectedPaperId = Fixture.uuid();
 
         final var expectedErrorCount = 1;
         final var expectedErrorMessage = "'amount' should not be null";
-        final var actualException = assertThrows(NotificationException.class, () -> Wallet.newWallet(expectedAmount, expectedCustomerId));
+        final var actualException = assertThrows(NotificationException.class, () -> Wallet.newWallet(expectedAmount, expectedCustomerId, expectedPaperId));
 
         assertEquals(expectedErrorCount, actualException.getErrors().size());
         assertEquals(expectedErrorMessage, actualException.getFirstError().get().message());
@@ -51,12 +55,13 @@ public class WalletTest extends UnitTest {
 
     @Test
     public void givenAnInvalidNegativeAmount_whenCallsNewWallet_shouldReceiveAnException() {
-        final Double expectedAmount = Fixture.negativeNumber();
+        final var expectedAmount = Fixture.negativeNumber();
         final var expectedCustomerId = Fixture.uuid();
+        final var expectedPaperId = Fixture.uuid();
 
         final var expectedErrorCount = 1;
         final var expectedErrorMessage = "'amount' should be greater then or equals 0";
-        final var actualException = assertThrows(NotificationException.class, () -> Wallet.newWallet(expectedAmount, expectedCustomerId));
+        final var actualException = assertThrows(NotificationException.class, () -> Wallet.newWallet(expectedAmount, expectedCustomerId, expectedPaperId));
 
         assertEquals(expectedErrorCount, actualException.getErrors().size());
         assertEquals(expectedErrorMessage, actualException.getFirstError().get().message());
@@ -66,10 +71,11 @@ public class WalletTest extends UnitTest {
     public void givenAnInvalidNullCustomerId_whenCallsNewWallet_shouldReceiveAnException() {
         final var expectedAmount = Fixture.positiveNumber();
         final String expectedCustomerId = null;
+        final var expectedPaperId = Fixture.uuid();
 
         final var expectedErrorCount = 1;
         final var expectedErrorMessage = "'customerId' should not be null";
-        final var actualException = assertThrows(NotificationException.class, () -> Wallet.newWallet(expectedAmount, expectedCustomerId));
+        final var actualException = assertThrows(NotificationException.class, () -> Wallet.newWallet(expectedAmount, expectedCustomerId, expectedPaperId));
 
         assertEquals(expectedErrorCount, actualException.getErrors().size());
         assertEquals(expectedErrorMessage, actualException.getFirstError().get().message());
@@ -79,10 +85,11 @@ public class WalletTest extends UnitTest {
     public void givenAnInvalidEmptyCustomerId_whenCallsNewWallet_shouldReceiveAnException() {
         final var expectedAmount = Fixture.positiveNumber();
         final var expectedCustomerId = " ";
+        final var expectedPaperId = Fixture.uuid();
 
         final var expectedErrorCount = 1;
         final var expectedErrorMessage = "'customerId' should not be empty";
-        final var actualException = assertThrows(NotificationException.class, () -> Wallet.newWallet(expectedAmount, expectedCustomerId));
+        final var actualException = assertThrows(NotificationException.class, () -> Wallet.newWallet(expectedAmount, expectedCustomerId, expectedPaperId));
 
         assertEquals(expectedErrorCount, actualException.getErrors().size());
         assertEquals(expectedErrorMessage, actualException.getFirstError().get().message());

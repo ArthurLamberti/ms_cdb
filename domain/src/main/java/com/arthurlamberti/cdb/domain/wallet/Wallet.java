@@ -16,13 +16,13 @@ import static java.util.Objects.isNull;
 @Getter
 public class Wallet extends AggregateRoot<WalletID> {
 
-    private final Double amount;
+    private final Integer amount;
     private final String customerId;
     private final String paperID;
 
     protected Wallet(
             final WalletID anId,
-            final Double anAmount,
+            final Integer anAmount,
             final String aCustomerId,
             final String paperID
     ) {
@@ -34,7 +34,7 @@ public class Wallet extends AggregateRoot<WalletID> {
         selfValidate();
     }
 
-    public static Wallet with(final WalletID anId, final Double amount, String customerId, String paperID) {
+    public static Wallet with(final WalletID anId, final Integer amount, String customerId, String paperID) {
         return new Wallet(
                 anId,
                 amount,
@@ -51,7 +51,7 @@ public class Wallet extends AggregateRoot<WalletID> {
     }
 
     public static Wallet newWallet(
-            final Double anAmount,
+            final Integer anAmount,
             final String customerId,
             final String paperID
     ) {
@@ -62,5 +62,13 @@ public class Wallet extends AggregateRoot<WalletID> {
     @Override
     public void validate(final ValidationHandler handler) {
         new WalletValidator(handler, this).validate();
+    }
+
+    public Wallet incrementAmount(Integer amount) {
+        return new Wallet(getId(), getAmount() + amount, getCustomerId(), getPaperID());
+    }
+
+    public Wallet decrementAmount(Integer amount) {
+        return new Wallet(getId(), getAmount() - amount, getCustomerId(), getPaperID());
     }
 }

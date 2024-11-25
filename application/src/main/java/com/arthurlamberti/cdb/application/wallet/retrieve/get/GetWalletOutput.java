@@ -7,7 +7,7 @@ import java.util.List;
 
 public record GetWalletOutput(
         String id,
-        Double amount,
+        Integer amount,
         String customerId,
         String paperId
 ) {

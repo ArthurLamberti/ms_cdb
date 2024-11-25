@@ -2,6 +2,10 @@ package com.arthurlamberti.cdb.infrastructure.api.controllers;
 
 import com.arthurlamberti.cdb.application.wallet.create.CreateWalletCommand;
 import com.arthurlamberti.cdb.application.wallet.create.CreateWalletUseCase;
+import com.arthurlamberti.cdb.application.wallet.paper.buy.BuyPaperCommand;
+import com.arthurlamberti.cdb.application.wallet.paper.buy.BuyPaperWalletUseCase;
+import com.arthurlamberti.cdb.application.wallet.paper.sell.SellPaperCommand;
+import com.arthurlamberti.cdb.application.wallet.paper.sell.SellPaperWalletUseCase;
 import com.arthurlamberti.cdb.application.wallet.retrieve.get.GetWalletUseCase;
 import com.arthurlamberti.cdb.application.wallet.retrieve.list.ListWalletUseCase;
 import com.arthurlamberti.cdb.infrastructure.api.WalletApi;
@@ -21,19 +25,25 @@ public class WalletController implements WalletApi {
     private final CreateWalletUseCase createWalletUseCase;
     private final ListWalletUseCase listWalletUseCase;
     private final GetWalletUseCase getWalletUseCase;
+    private final BuyPaperWalletUseCase buyPaperWalletUseCase;
+    private final SellPaperWalletUseCase sellPaperWalletUseCase;
 
     public WalletController(
             final CreateWalletUseCase createWalletUseCase,
             final ListWalletUseCase listWalletUseCase,
-            final GetWalletUseCase getWalletUseCase) {
+            final GetWalletUseCase getWalletUseCase,
+            final BuyPaperWalletUseCase buyPaperWalletUseCase,
+            final SellPaperWalletUseCase sellPaperWalletUseCase) {
         this.createWalletUseCase = createWalletUseCase;
         this.listWalletUseCase = listWalletUseCase;
         this.getWalletUseCase = getWalletUseCase;
+        this.buyPaperWalletUseCase = buyPaperWalletUseCase;
+        this.sellPaperWalletUseCase = sellPaperWalletUseCase;
     }
 
     @Override
     public ResponseEntity<?> createWallet(CreateWalletRequest input) {
-        final var aCommand = CreateWalletCommand.with(0.0,input.customerId(), input.paperId());
+        final var aCommand = CreateWalletCommand.with(0,input.customerId(), input.paperId());
 
         final var output = createWalletUseCase.execute(aCommand);
 
@@ -55,11 +65,17 @@ public class WalletController implements WalletApi {
 
     @Override
     public ResponseEntity<?> buyPaper(BuyPaperRequest input, String customerId, String paperId) {
-        return null;
+        final var aCommand = BuyPaperCommand.with(customerId, paperId, input.amount());
+
+        buyPaperWalletUseCase.execute(aCommand);
+        return ResponseEntity.noContent().build();
     }
 
     @Override
     public ResponseEntity<?> sellPaper(SellPaperRequest input, String customerId, String paperId) {
-        return null;
+        final var aCommand = SellPaperCommand.with(customerId, paperId, input.amount());
+
+        sellPaperWalletUseCase.execute(aCommand);
+        return ResponseEntity.noContent().build();
     }
 }
