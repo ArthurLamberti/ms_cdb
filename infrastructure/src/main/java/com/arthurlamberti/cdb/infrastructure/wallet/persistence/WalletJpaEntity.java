@@ -26,23 +26,19 @@ public class WalletJpaEntity {
     @Column(name = "amount", nullable = false)
     private Integer amount;
 
-    @Column(name = "customer_id", nullable = false)
+    @Column(name = "customer_id", nullable = false, unique = true)
     private String customerId;
 
-    @Column(name = "paper_id", nullable = false)
-    private String paperId;
-    //@OneToOne
-    //private PaperJpaEntity paper;
-
-//    @OneToOne
-//    private PaperJpaEntity paper;
+    @ManyToOne
+    @JoinColumn(name = "paper_id", nullable = false)
+    private PaperJpaEntity paper;
 
     public static WalletJpaEntity from(final Wallet aWallet){
         return new WalletJpaEntity(
                 aWallet.getId().getValue(),
                 aWallet.getAmount(),
                 aWallet.getCustomerId(),
-                aWallet.getPaperID()
+                PaperJpaEntity.from(aWallet.getPaper())
         );
     }
 
@@ -51,7 +47,7 @@ public class WalletJpaEntity {
                 WalletID.from(this.id),
                 this.amount,
                 this.customerId,
-                this.paperId
+                this.paper.toAggregate()
         );
     }
 }

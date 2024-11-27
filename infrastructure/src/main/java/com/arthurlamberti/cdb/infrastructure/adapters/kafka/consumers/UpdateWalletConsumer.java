@@ -34,9 +34,9 @@ public class UpdateWalletConsumer {
 
         final var updatedWallet = Wallet.with(
                 WalletID.from(wallet.getId()),
-                updatedResponse.type() == TransactionType.BUY ? wallet.getAmount() + transaction.getAmount() : wallet.getAmount() - transaction.getAmount(),
+                transaction.getType() == TransactionType.BUY ? wallet.getAmount() + transaction.getAmount() : wallet.getAmount() - transaction.getAmount(),
                 wallet.getCustomerId(),
-                wallet.getPaperId()
+                wallet.getPaper().toAggregate()
         );
         transactionRepository.save(transaction.changeStatus(transaction,TransactionStatus.EXECUTED));
         walletRepository.save(WalletJpaEntity.from(updatedWallet));

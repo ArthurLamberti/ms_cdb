@@ -26,7 +26,7 @@ public class WalletValidator extends Validator {
     }
 
     private void checkPaperId() {
-        final var paperId = wallet.getPaperID();
+        final var paperId = wallet.getPaper().getId().getValue();
         if (isNull(paperId)){
             this.validationHandler().append(new Error("'paperId' should not be null"));
             return;
@@ -43,8 +43,8 @@ public class WalletValidator extends Validator {
             return;
         }
 
-        if (amount <= 0) {
-            this.validationHandler().append(new Error("'amount' should be greater then 0"));
+        if (amount < 0) {
+            this.validationHandler().append(new Error("'amount' should be greater then or equals 0"));
         }
     }
     private void checkCustomerId(){

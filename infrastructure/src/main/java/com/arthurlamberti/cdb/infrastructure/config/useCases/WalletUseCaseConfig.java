@@ -43,7 +43,7 @@ public class WalletUseCaseConfig {
 
     @Bean
     public CreateWalletUseCase createWalletUseCase() {
-        return new DefaultCreateWalletUseCase(walletGateway);
+        return new DefaultCreateWalletUseCase(walletGateway, paperGateway);
     }
 
     @Bean

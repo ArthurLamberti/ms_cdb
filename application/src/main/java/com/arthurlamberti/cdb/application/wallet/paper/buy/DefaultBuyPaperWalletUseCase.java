@@ -41,10 +41,11 @@ public class DefaultBuyPaperWalletUseCase extends BuyPaperWalletUseCase {
     public void execute(final BuyPaperCommand aCommand) {
         //get paper
         Optional<Paper> optPaper = paperGateway.findById(PaperID.from(aCommand.paperId()));
-        if(optPaper.isEmpty()) {
+        if (optPaper.isEmpty()) {
             throw DomainException.with(new Error("paper %s does not exists".formatted(aCommand.paperId())));
         }
         final var totalValue = optPaper.get().getValue() * aCommand.amount();
+        //TODO verify if customner exists
 
         //comentado pois nao tem garantia de que o balance esta atualizado com a compra via kafak
 //        CustomerExternalDomain customerExternalDomain = customerExternal.getCustomer(aCommand.customerId());
@@ -54,10 +55,17 @@ public class DefaultBuyPaperWalletUseCase extends BuyPaperWalletUseCase {
 //            throw DomainException.with(new Error("balance should be greater or equals value"));
 //        }
         //verify if exists a wallet with customer id and paper
-        final var optWallet = walletGateway.findByCustomerIdAndPaperId(aCommand.customerId(),aCommand.paperId());
+        final var optWallet = walletGateway.findByCustomerIdAndPaperId(aCommand.customerId(), aCommand.paperId());
         final var wallet = optWallet.orElseGet(
-                () -> walletGateway.create(Wallet.newWallet(0, aCommand.customerId(), aCommand.paperId()))
+                () -> walletGateway.create(Wallet.newWallet(0, aCommand.customerId(), optPaper.get()))
         );
+//        Wallet wallet = null;
+//        if (optWallet.isPresent()) {
+//            wallet = optWallet.get();
+//            wallet = wallet.incrementAmount(aCommand.amount());
+//        } else {
+//            wallet = walletGateway.create(Wallet.newWallet(0, aCommand.customerId(), optPaper.get()));
+//        }
         final var updatedWallet = wallet.incrementAmount(aCommand.amount());
 
         final var transactionId = transactionGateway.create(updatedWallet, aCommand.amount(), BUY);

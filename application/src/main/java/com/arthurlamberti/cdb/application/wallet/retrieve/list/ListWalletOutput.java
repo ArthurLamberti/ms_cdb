@@ -17,7 +17,7 @@ public record ListWalletOutput (
                 wallet.getId().getValue(),
                 wallet.getAmount(),
                 wallet.getCustomerId(),
-                wallet.getPaperID()
+                wallet.getPaper().getId().getValue()
         );
     }
 

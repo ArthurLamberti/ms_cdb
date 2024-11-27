@@ -22,7 +22,7 @@ public class TransactionMySQLGateway implements TransactionGateway {
         return transactionRepository
                 .save(
                         TransactionPaperJpaEntity.from(updatedWallet.getId().getValue(),
-                                updatedWallet.getPaperID(),
+                                updatedWallet.getPaper().getId().getValue(),
                                 amount,
                                 transactionType,
                                 TransactionStatus.CREATED))

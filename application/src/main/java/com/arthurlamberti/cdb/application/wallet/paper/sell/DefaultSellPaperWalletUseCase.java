@@ -45,7 +45,7 @@ public class DefaultSellPaperWalletUseCase extends SellPaperWalletUseCase {
         if (wallet.getAmount() < aCommand.amount()) {
             throw DomainException.with(new Error("Customer does not contains %d papers".formatted(aCommand.amount())));
         }
-        final var totalValue = paper.getValue() + aCommand.amount();
+        final var totalValue = paper.getValue() * aCommand.amount();
         final var updatedWallet = wallet.decrementAmount(aCommand.amount());
 
         final var transactionId = transactionGateway.create(updatedWallet, aCommand.amount(), SELL);
