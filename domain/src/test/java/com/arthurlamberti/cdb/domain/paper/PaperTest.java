@@ -11,7 +11,7 @@ public class PaperTest extends UnitTest {
 
     @Test
     public void givenAValidParams_whenCallsNewPaper_shouldInstantiateAPaper() {
-        final var expectedValue = Fixture.positiveNumber();
+        final var expectedValue = Fixture.positiveNumber().doubleValue();
 
         final var actualPaper = Paper.newPaper(expectedValue);
         assertNotNull(actualPaper);
@@ -62,7 +62,7 @@ public class PaperTest extends UnitTest {
 
         final var actualerror = assertThrows(
                 NotificationException.class,
-                () -> Paper.newPaper(expectedValue)
+                () -> Paper.newPaper(expectedValue.doubleValue())
         );
 
         assertEquals(expectedErrorCount, actualerror.getErrors().size());

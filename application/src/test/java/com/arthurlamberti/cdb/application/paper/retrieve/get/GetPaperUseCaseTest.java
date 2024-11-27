@@ -1,7 +1,9 @@
 package com.arthurlamberti.cdb.application.paper.retrieve.get;
 
 import com.arthurlamberti.cdb.application.UseCaseTest;
+import com.arthurlamberti.cdb.application.paper.create.CreatePaperCommand;
 import com.arthurlamberti.cdb.domain.Fixture;
+import com.arthurlamberti.cdb.domain.exceptions.NotFoundException;
 import com.arthurlamberti.cdb.domain.paper.Paper;
 import com.arthurlamberti.cdb.domain.paper.PaperGateway;
 import org.junit.jupiter.api.Disabled;
@@ -14,7 +16,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
 public class GetPaperUseCaseTest extends UseCaseTest {
 
@@ -31,7 +34,7 @@ public class GetPaperUseCaseTest extends UseCaseTest {
 
     @Test
     public void givenAValidId_whenCallsGetPaper_shouldReturnPaper() {
-        final var expectedPaper = Paper.newPaper(Fixture.positiveNumber());
+        final var expectedPaper = Paper.newPaper(Fixture.positiveDoubleNumber());
         final var expectedId = expectedPaper.getId();
 
         when(paperGateway.findById(any())).thenReturn(Optional.of(expectedPaper));
@@ -43,22 +46,33 @@ public class GetPaperUseCaseTest extends UseCaseTest {
     }
 
     @Test
-    @Disabled
     public void givenAInvalidId_whenCallsGetPaper_shouldReturnAnException() {
+        final var expectedPaper = Paper.newPaper(Fixture.positiveDoubleNumber());
+        final var expectedId = expectedPaper.getId().getValue();
+        final var expectedErrorCount = 1;
+        final var expectedErrorMessage = "Paper with ID %s was not found".formatted(expectedId);
+
+        when(paperGateway.findById(any())).thenReturn(Optional.empty());
+
+        final var actualException = assertThrows(NotFoundException.class, () -> useCase.execute(expectedId));
+
+        assertNotNull(actualException);
+        assertEquals(expectedErrorCount, actualException.getErrors().size());
+        assertEquals(expectedErrorMessage, actualException.getFirstError().get().message());
+
+        verify(paperGateway, times(1)).findById(any());
     }
 
     @Test
-    @Disabled
-    public void givenAnEmptyId_whenCallsGetPaper_shouldReturnAnException() {
-    }
-
-    @Test
-    @Disabled
-    public void givenANullId_whenCallsGetPaper_shouldReturnAnException() {
-    }
-
-    @Test
-    @Disabled
     public void givenAGatewayError_whenCallsListPaper_shouldReturnAnException() {
+        final var expectedValue = Fixture.positiveDoubleNumber();
+        final var expectedId = Fixture.uuid();
+        final var expectedErrorMessage = "Gateway error";
+
+        doThrow(new IllegalStateException(expectedErrorMessage)).when(paperGateway).findById(any());
+        final var actualException = assertThrows(IllegalStateException.class, () -> useCase.execute(expectedId));
+
+        assertEquals(expectedErrorMessage, actualException.getMessage());
+        verify(paperGateway, times(1)).findById(any());
     }
 }

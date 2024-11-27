@@ -2,6 +2,7 @@ package com.arthurlamberti.cdb.application.wallet.retrieve.get;
 
 import com.arthurlamberti.cdb.application.UseCaseTest;
 import com.arthurlamberti.cdb.domain.Fixture;
+import com.arthurlamberti.cdb.domain.exceptions.NotFoundException;
 import com.arthurlamberti.cdb.domain.paper.PaperID;
 import com.arthurlamberti.cdb.domain.wallet.Wallet;
 import com.arthurlamberti.cdb.domain.wallet.WalletGateway;
@@ -15,7 +16,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class GetWalletUseCaseTest extends UseCaseTest {
 
@@ -45,22 +46,20 @@ public class GetWalletUseCaseTest extends UseCaseTest {
     }
 
     @Test
-    @Disabled
     public void givenAInvalidId_whenCallsGetPaper_shouldReturnAnException() {
-    }
+        final var expectedWallet = Wallet.newWallet(Fixture.positiveNumber(), Fixture.uuid(), Fixture.uuid());
+        final var expectedWalletId = expectedWallet.getId().getValue();
+        final var expectedErrorCount = 1;
+        final var expectedErrorMessage = "Wallet with ID %s was not found".formatted(expectedWalletId);
 
-    @Test
-    @Disabled
-    public void givenAnEmptyId_whenCallsGetPaper_shouldReturnAnException() {
-    }
+        when(walletGateway.findById(any())).thenReturn(Optional.empty());
 
-    @Test
-    @Disabled
-    public void givenANullId_whenCallsGetPaper_shouldReturnAnException() {
-    }
+        final var actualException = assertThrows(NotFoundException.class, () -> useCase.execute(expectedWalletId));
 
-    @Test
-    @Disabled
-    public void givenAGatewayError_whenCallsListPaper_shouldReturnAnException() {
+        assertNotNull(actualException);
+        assertEquals(expectedErrorCount, actualException.getErrors().size());
+        assertEquals(expectedErrorMessage, actualException.getFirstError().get().message());
+
+        verify(walletGateway, times(1)).findById(any());
     }
 }

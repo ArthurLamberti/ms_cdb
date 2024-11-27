@@ -94,16 +94,4 @@ public class WalletTest extends UnitTest {
         assertEquals(expectedErrorCount, actualException.getErrors().size());
         assertEquals(expectedErrorMessage, actualException.getFirstError().get().message());
     }
-
-    @Test
-    @Disabled
-    public void givenAValidWallet_whenCallsAddPaper_shouldAddOnWallet(){}
-
-    @Test
-    @Disabled
-    public void givenAnInvalidNullPaperId_whenCallsAddPaper_shouldReturnAnError(){}
-
-    @Test
-    @Disabled
-    public void givenAnInvalidEmptyPaperId_whenCallsAddPaper_shouldReturnAnError(){}
 }

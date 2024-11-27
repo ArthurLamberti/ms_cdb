@@ -22,7 +22,7 @@ public class PaperMySQLGatewayTest {
 
     @Test
     public void givenAValidPaper_whenCallsCreatePaper_shouldPersistIt() {
-        final var aPaper = Paper.newPaper(Fixture.positiveNumber());
+        final var aPaper = Paper.newPaper(Fixture.positiveDoubleNumber());
 
         assertEquals(0, paperRepository.count());
         final var actualPaper = paperGateway.create(aPaper);

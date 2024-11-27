@@ -13,8 +13,7 @@ public class UpdateWalletProducer {
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
 
-    public void sendMessage(String topic, Wallet wallet, Double toUpdate) {
-        kafkaTemplate.send(topic, Json.writeValueAsString(UpdateWalletBalance.with(wallet.getCustomerId(), toUpdate)));
+    public void sendMessage(String topic, String key, UpdateWalletBalance updateRecord) {
+        kafkaTemplate.send(topic, key, Json.writeValueAsString(updateRecord));
     }
-
 }

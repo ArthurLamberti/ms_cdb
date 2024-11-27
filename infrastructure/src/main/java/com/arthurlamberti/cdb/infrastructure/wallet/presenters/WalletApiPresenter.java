@@ -22,7 +22,8 @@ public interface WalletApiPresenter {
         return new GetWalletResponse(
                 output.id(),
                 output.amount(),
-                output.customerId()
+                output.customerId(),
+                output.paperId()
         );
     }
 }

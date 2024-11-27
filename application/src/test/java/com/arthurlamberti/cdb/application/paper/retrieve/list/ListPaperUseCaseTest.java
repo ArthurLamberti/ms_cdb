@@ -15,7 +15,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class ListPaperUseCaseTest extends UseCaseTest {
 
@@ -33,23 +33,24 @@ public class ListPaperUseCaseTest extends UseCaseTest {
     @Test
     public void givenAnExistedList_whenCallsListPaper_shouldReturnAList() {
         final var expectedList = List.of(
-                Paper.newPaper(Fixture.positiveNumber()),
-                Paper.newPaper(Fixture.positiveNumber())
+                Paper.newPaper(Fixture.positiveDoubleNumber()),
+                Paper.newPaper(Fixture.positiveDoubleNumber())
         );
 
         when(paperGateway.findAll()).thenReturn(expectedList);
 
         final var actualResult = useCase.execute();
         assertNotNull(actualResult);
+        verify(paperGateway, times(1)).findAll();
     }
 
     @Test
-    @Disabled
     public void givenAnEmptyList_whenCallsListPaper_shouldReturnAnEmptyResult() {
-    }
-
-    @Test
-    @Disabled
-    public void givenAGatewayError_whenCallsListPaper_shouldReturnAnException() {
+        final var expectedList = List.<Paper>of();
+        when(paperGateway.findAll()).thenReturn(expectedList);
+        final var actualResult = useCase.execute();
+        assertNotNull(actualResult);
+        assertTrue(actualResult.isEmpty());
+        verify(paperGateway, times(1)).findAll();
     }
 }

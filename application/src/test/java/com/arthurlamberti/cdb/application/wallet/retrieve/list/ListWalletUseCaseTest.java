@@ -13,7 +13,7 @@ import org.mockito.Mock;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class ListWalletUseCaseTest extends UseCaseTest {
 
@@ -31,9 +31,9 @@ class ListWalletUseCaseTest extends UseCaseTest {
     @Test
     public void givenAnExistedList_whenCallsListWallet_shouldReturnAList() {
         final var expectedList = List.of(
-                Wallet.newWallet(Fixture.positiveNumber(), Fixture.uuid()),
-                Wallet.newWallet(Fixture.positiveNumber(), Fixture.uuid()),
-                Wallet.newWallet(Fixture.positiveNumber(), Fixture.uuid())
+                Wallet.newWallet(Fixture.positiveNumber(), Fixture.uuid(), Fixture.uuid()),
+                Wallet.newWallet(Fixture.positiveNumber(), Fixture.uuid(), Fixture.uuid()),
+                Wallet.newWallet(Fixture.positiveNumber(), Fixture.uuid(), Fixture.uuid())
         );
 
         when(walletGateway.findAll()).thenReturn(expectedList);
@@ -44,12 +44,12 @@ class ListWalletUseCaseTest extends UseCaseTest {
     }
 
     @Test
-    @Disabled
     public void givenAnEmptyList_whenCallsListPaper_shouldReturnAnEmptyResult() {
-    }
-
-    @Test
-    @Disabled
-    public void givenAGatewayError_whenCallsListPaper_shouldReturnAnException() {
+        final var expectedList = List.<Wallet>of();
+        when(walletGateway.findAll()).thenReturn(expectedList);
+        final var actualResult = useCase.execute();
+        assertNotNull(actualResult);
+        assertTrue(actualResult.isEmpty());
+        verify(walletGateway, times(1)).findAll();
     }
 }
